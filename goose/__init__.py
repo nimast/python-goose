@@ -61,6 +61,9 @@ class Goose(object):
         return article
 
     def initialize(self):
+        if not self.config.cache_images_locally:
+            return
+
         # test if config.local_storage_path
         # is a directory
         if not os.path.isdir(self.config.local_storage_path):

@@ -84,6 +84,8 @@ class Configuration(object):
         # Parser type
         self.parser_class = 'lxml'
 
+        self.cache_images_locally = False
+
     @property
     def local_storage_path(self):
         return os.path.join(tempfile.gettempdir(), 'goose')

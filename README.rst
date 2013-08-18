@@ -1,6 +1,15 @@
 Python-Goose - Article Extractor |Build Status|
 ===============================================
 
+Warning
+-----
+
+This is a modified version of Goose meant to be used internally with Google App Engine (GAE) application.
+The image processing features for determining image file type, size and additional attributes have been
+removed from this version if running in an environment with no file system. Drop me a note if you need these
+features implemented and i might be able to provide some insights as i have been trying to make these parts
+functional but was wasting too much time on it without actually needing it. Sorry for that :/
+
 Intro
 -----
 

@@ -24,6 +24,7 @@ import hashlib
 import os
 import urllib2
 from PIL import Image
+from StringIO import StringIO
 from goose.utils.encoding import smart_str
 from goose.images.image import ImageDetails
 from goose.images.image import LocallyStoredImage
@@ -32,8 +33,12 @@ from goose.images.image import LocallyStoredImage
 class ImageUtils(object):
 
     @classmethod
-    def get_image_dimensions(self, identify_program, path):
-        image = Image.open(path)
+    def get_image_dimensions(self, identify_program, path_or_bytes):
+        image = Image.open(path_or_bytes)
+        return self.get_image_dimensions_from_image(image)
+
+    @classmethod
+    def get_image_dimensions_from_image(self, image):
         image_details = ImageDetails()
         image_details.set_mime_type(image.format)
         width, height = image.size
@@ -44,10 +49,25 @@ class ImageUtils(object):
     @classmethod
     def store_image(self, http_client, link_hash, src, config):
         """\
-        Writes an image src http string to disk as a temporary file
+        If image caching is enabled, writes an image src http string to disk as a temporary file
         and returns the LocallyStoredImage object
         that has the info you should need on the image
         """
+        if not config.cache_images_locally:
+            # bytes = self.fetch(http_client, src)
+            # string_io = StringIO()
+            # string_io.write(bytes)
+            # image_details = self.get_image_dimensions(None, string_io)
+            # file_extension = self.get_mime_type(image_details)
+            return LocallyStoredImage(
+                src=src
+                # link_hash=link_hash,
+                # bytes=bytes,
+                # file_extension=file_extension,
+                # height=image_details.get_height(),
+                # width=image_details.get_width()
+            )
+
         # check for a cache hit already on disk
         image = self.read_localfile(link_hash, src, config)
         if image:

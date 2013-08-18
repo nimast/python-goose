@@ -139,6 +139,9 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def relase_resources(self, article):
+        if not self.config.cache_images_locally:
+            return
+
         path = os.path.join(self.config.local_storage_path, '%s_*' % article.link_hash)
         for fname in glob.glob(path):
             try:
