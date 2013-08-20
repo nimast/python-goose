@@ -31,6 +31,7 @@ from goose.outputformatters import StandardOutputFormatter
 from goose.images.extractors import UpgradedImageIExtractor
 from goose.videos.extractors import VideoExtractor
 from goose.network import HtmlFetcher
+from goose.videos.video_info.youtube.extractors import YouTubeVideoExtractor
 
 
 class CrawlCandidate(object):
@@ -104,6 +105,9 @@ class Crawler(object):
         # cleanup tmp file
         self.relase_resources(article)
 
+        # extract video info
+        article.additional_data['video_info'] = self.get_video_info_extractor(article).get_video_info()
+
         return article
 
     def get_parse_candidate(self, crawl_candidate):
@@ -117,6 +121,10 @@ class Crawler(object):
         # fetch HTML
         html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
         return html
+
+    def get_video_info_extractor(self, article):
+        # replace with a generic pipeline in case you ever wanna add something here
+        return YouTubeVideoExtractor(article, self.config)
 
     def get_image_extractor(self, article):
         http_client = None
