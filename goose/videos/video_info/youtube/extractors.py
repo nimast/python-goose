@@ -23,6 +23,9 @@ class YouTubeVideoExtractor(object):
         self.video_id = None
 
     def get_video_info(self):
+        if not self.is_youtube_article():
+            return None
+
         result = self.extract_using_video_information()
         if not result:
             result = self.extract_using_gdata()
@@ -37,8 +40,18 @@ class YouTubeVideoExtractor(object):
             return None
 
         result = VideoInfo()
-        result.preview_image_url = youtube_info['iurlsd'] if youtube_info['iurlsd'] else youtube_info['thumbnail_url']
+        preview_image_url = youtube_info.get('iurlsd')
+        if not preview_image_url:
+            preview_image_url = youtube_info['thumbnail_url']
+        result.preview_image_url = preview_image_url
         result.title = youtube_info['title']
+
+    def is_youtube_article(self):
+        article_url = self.article.final_url.lower()
+        return article_url.startswith('http://www.youtube.com') or \
+               article_url.startswith('http://m.youtube.com') or \
+               article_url.startswith('https://www.youtube.com') or \
+               article_url.startswith('https://m.youtube.com')
 
     def extract_using_gdata(self):
         try:

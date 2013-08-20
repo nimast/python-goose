@@ -106,7 +106,9 @@ class Crawler(object):
         self.relase_resources(article)
 
         # extract video info
-        article.additional_data['video_info'] = self.get_video_info_extractor(article).get_video_info()
+        video_info = self.get_video_info_extractor(article).get_video_info()
+        if video_info:
+            article.additional_data['video_info'] = video_info
 
         return article
 
