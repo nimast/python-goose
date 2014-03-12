@@ -87,7 +87,7 @@ class ImageDetails(object):
 class LocallyStoredImage(object):
 
     def __init__(self, src='', local_filename='',
-        link_hash='', bytes=long(0), file_extension='', height=0, width=0):
+        link_hash='', bytes=long(0), file_extension='', height=75, width=75):
         self.src = src
         self.local_filename = local_filename
         self.link_hash = link_hash

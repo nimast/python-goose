@@ -50,7 +50,7 @@ class Parser(object):
 
     @classmethod
     def fromstring(self, html):
-        html = encodeValue(html)
+        # html = encodeValue(html)
         self.doc = lxml.html.fromstring(html)
         return self.doc
 

@@ -173,6 +173,8 @@ class UpgradedImageIExtractor(ImageExtractor):
         for image in images[:30]:
             src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
+            if src[:2] == "//":
+                src = 'http:' + src
             local_image = self.get_local_image(src)
             width = local_image.width
             height = local_image.height
@@ -180,7 +182,7 @@ class UpgradedImageIExtractor(ImageExtractor):
             file_extension = local_image.file_extension
 
             if file_extension != '.gif' or file_extension != 'NA':
-                if (depth_level >= 1 and local_image.width > 300) or depth_level < 1:
+                if (depth_level >= 1 and local_image.width > MIN_WIDTH) or depth_level < 1:
                     if not self.is_banner_dimensions(width, height):
                         if width > MIN_WIDTH:
                             sequence_score = float(1.0 / cnt)
