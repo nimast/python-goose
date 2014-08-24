@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import urllib2
+from bs4 import UnicodeDammit
 
 
 class HtmlFetcher(object):
@@ -43,6 +44,9 @@ class HtmlFetcher(object):
 
         try:
             result = urllib2.urlopen(request).read()
+            ud = UnicodeDammit(result, is_html=True)
+            if ud.original_encoding != 'utf-8':
+                result = result.decode(ud.original_encoding, 'replace').encode('utf-8')
         except:
             return None
 
